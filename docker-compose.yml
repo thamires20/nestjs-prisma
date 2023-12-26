@@ -1,18 +1,19 @@
-version: '3.9'
+version: "3.7"
+
 services:
-  mysql:
-    container_name: 'crud-rest-api'
-    command: '--default-authentication-plugin=mysql_native_password'
-    image: 'mysql:8-debian'
+  database:
+    image: postgres
+    container_name: crud-rest-api
+    restart: always
     ports:
-      - '3306:3306'
-    volumes:
-      - './sql:/docker-entrypoint-initdb.d'
-      - 'data-mysql:/var/lib/mysql'
+      - 5432:5432
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_DATABASE: 'crud-rest-api'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=crud-rest-api
+    volumes:
+      - pg_data:/data/postgres
+
 volumes:
-  data-mysql:
+  pg_data:
+    driver: local
